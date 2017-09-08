@@ -1,0 +1,52 @@
+@model BrightIdeas.Models.Post
+
+<header>
+    <p>Hi @ViewBag.User.alias!</p>
+    <a href="/logout">Logout</a>
+</header>
+@{
+    if(ViewBag.Errors != null){
+        <span style="color:red">@ViewBag.Errors</span>
+    }
+}
+<form asp-action="Post" asp-controller="Ideas" method="post">
+    <p>
+        <textarea asp-for="content" placeholder="Post something witty here..." cols="100" rows="10"></textarea>
+        <input type="submit" value="Idea!">
+    </p>
+</form>
+
+@{
+    foreach(var post in @ViewBag.posts){
+        <div class = "posts">
+            <p>
+                <a href="/users/@post.user.id">@post.user.alias</a> says:
+                <p>@post.content</p>
+            </p>
+            <p>
+                @{
+                    bool check = false;
+                    foreach(var like in post.likes){
+                        if(like.user_id == ViewBag.User.id){
+                            check = true;
+                        }
+                    } 
+                    if(check == false){
+                        <a href="/like/@post.id">Like</a>
+                    }    
+                }
+
+                <p class="likes"><a href="/bright_ideas/@post.id">@post.likes.Count</a> people like this</p>
+                @{
+                    if(ViewBag.User.id == post.user.id)
+                    {
+                        <form action="/delete" method="POST">
+                            <input type="hidden" name="post_id" value="@post.id">
+                            <input type="submit" value="Delete">
+                        </form>
+                    }
+                }
+            </p>
+        </div>
+    }
+}

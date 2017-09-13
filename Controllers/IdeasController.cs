@@ -146,6 +146,9 @@ namespace BrightIdeas.Controllers
         [HttpGet]
         [Route("/like/{post_id}")]
         public IActionResult Like(int post_id){
+            if(HttpContext.Session.GetInt32("CurrUserId") == null){
+                return RedirectToAction("Default");
+            }
             int user_id = (int) HttpContext.Session.GetInt32("CurrUserId");
             likeFactory.Add(user_id, post_id);
             return RedirectToAction("Ideas");

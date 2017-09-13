@@ -43,14 +43,22 @@ namespace BrightIdeas.Controllers
         [Route("/register")]
         public IActionResult Register(User newUser)
         {   
+            ViewBag.EmailError = null;
             if(ModelState.IsValid)
             {
-                var Hasher = new PasswordHasher<User>();
-                newUser.password = Hasher.HashPassword(newUser, newUser.password);
-                userFactory.Add(newUser);
-                User CurrentUser = userFactory.GetLatestUser();
-                HttpContext.Session.SetInt32("CurrUserId", CurrentUser.id);
-                return RedirectToAction("Ideas");
+                var checkuser = userFactory.GetUserByEmail(newUser.email);
+                if(checkuser != null){
+                    ViewBag.EmailErrors = "This Email Address is already registered.";
+                    return View("Main");
+                }
+                else{
+                    var Hasher = new PasswordHasher<User>();
+                    newUser.password = Hasher.HashPassword(newUser, newUser.password);
+                    userFactory.Add(newUser);
+                    User CurrentUser = userFactory.GetLatestUser();
+                    HttpContext.Session.SetInt32("CurrUserId", CurrentUser.id);
+                    return RedirectToAction("Ideas");
+                }
             }
 
             ViewBag.Errors = ModelState.Values;

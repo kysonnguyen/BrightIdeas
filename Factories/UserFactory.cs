@@ -75,7 +75,7 @@ namespace BrightIdeas.Factory
         }
         public void Delete(int post_id){
             using(IDbConnection cnx = Connection){
-                string query = $"DELETE FROM posts WHERE id = {post_id}; DELETE FROM likes WHERE post_id = {post_id};";
+                string query = $"DELETE FROM likes WHERE post_id = {post_id}; DELETE FROM posts WHERE id = {post_id};";
                 cnx.Open();
                 cnx.Execute(query);
             }

@@ -42,13 +42,7 @@ namespace BrightIdeas
         {
             loggerFactory.AddConsole();
             app.UseDeveloperExceptionPage();
-            app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), @"MyStaticFiles")),
-                RequestPath = new PathString("/StaticFiles")
-            });
+            app.UseStaticFiles();          
             app.UseSession();
             app.UseMvc();
         }

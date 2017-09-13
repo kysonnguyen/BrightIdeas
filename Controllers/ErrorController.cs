@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 
-public class ErrorController : Controller
+namespace BrightIdeas.Controllers
 {
-    public IActionResult Default()
+    public class ErrorController : Controller
     {
-        return View("~/Views/Shared/Errors/Default.cshtml");
+        public IActionResult Default()
+        {
+            return View("~/Views/Shared/Errors/Default.cshtml");
+        }
     }
 }

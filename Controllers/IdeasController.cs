@@ -114,6 +114,7 @@ namespace BrightIdeas.Controllers
         [Route("/post")]
         public IActionResult Post(Post newPost)
         {
+
             if(ModelState.IsValid){
                 newPost.user_id = (int)HttpContext.Session.GetInt32("CurrUserId");
                 postFactory.Add(newPost);
@@ -131,9 +132,15 @@ namespace BrightIdeas.Controllers
         [Route("/bright_ideas/{post_id}")]
         public IActionResult Idea(int post_id)
         {
-            ViewBag.Post = postFactory.GetPostById(post_id);
-            ViewBag.Users = userFactory.GetUserByPost(post_id);
-            return View("Idea");     
+            if(HttpContext.Session.GetInt32("CurrUserId") != null)
+            {
+                ViewBag.Post = postFactory.GetPostById(post_id);
+                ViewBag.Users = userFactory.GetUserByPost(post_id);
+                return View("Idea");
+            }
+            else{
+                return RedirectToAction("Default");
+            }
         }
 
         [HttpGet]
@@ -148,10 +155,16 @@ namespace BrightIdeas.Controllers
         [Route("/users/{user_id}")]
         public IActionResult GetUser(int user_id)
         {
-            ViewBag.User = userFactory.GetUserById(user_id);
-            ViewBag.numPosts = postFactory.GetPostsByUser(user_id).Count;
-            ViewBag.numLikes = likeFactory.GetLikesByUser(user_id).Count;
-            return View("User");     
+            if(HttpContext.Session.GetInt32("CurrUserId") != null)
+            {
+                ViewBag.User = userFactory.GetUserById(user_id);
+                ViewBag.numPosts = postFactory.GetPostsByUser(user_id).Count;
+                ViewBag.numLikes = likeFactory.GetLikesByUser(user_id).Count;
+                return View("User");  
+            }
+            else{
+                return RedirectToAction("Default");
+            }
         }
 
         [HttpPost]

@@ -52,11 +52,12 @@ form {
     text-align: right;
 }
 
-.likes a{
-    text-decoration: none;
-}
 
 .like{
     padding-left: 7%;
     float: right;
+}
+
+a{
+    text-decoration: none;
 }
